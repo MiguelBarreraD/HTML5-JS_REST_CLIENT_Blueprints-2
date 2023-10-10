@@ -1,0 +1,17 @@
+1. ¿Qué condiciones de carrera se podrían presentar?
+
+- La primera condición es que dos usuarios soliciten actualizar el mismo plano simultáneamente.
+- La segunda condición es que se consulte un plano mientras que este se este actualizando.
+- La tercera condición es que se intenten crear dos planos con el mismo nombre asociados al mismo autor.
+
+2. ¿Cuales son las respectivas regiones críticas?
+
+- Las regiones criticas se encuentran en la capa de persistencia, específicamente dentro
+  de la clase InMemoryBlueprintPersistence en los métodos de guardar (saveBlueprint) y 
+  actualizar (setBluePrint) un plano, debido a que estos son los encargados de llevar a 
+  cabo guardar y actualizar los planos.
+
+3.solución aplicada
+
+- Para solucionar la concurrencia se usan bloques sincronizados, en las funciones mencionadas
+  en el punto anterior.

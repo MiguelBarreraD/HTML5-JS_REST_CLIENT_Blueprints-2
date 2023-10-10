@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprints</title>
+    
+    <!-- Agregar enlaces a las bibliotecas de Bootstrap y jQuery -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <!-- Agregar tus archivos JavaScript y CSS personalizados -->
+    <script src="js/apiclient.js"></script>
+    <script src="js/apimock.js"></script>
+    <script src="js/app.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Blueprints</h1>
+        
+        <div class="form-group">
+            <label for="authorNameInput">Nombre del Autor:</label>
+            <input type="text" class="form-control" id="authorNameInput" placeholder="Ingrese el nombre del autor">
+        </div>
+        
+        <button type="button" class="btn btn-primary" id="btnUpdateBlueprints">Actualizar Planos</button>
+        
+        <div class="form-group">
+            <label for="apiType">Tipo de API:</label>
+            <select class="form-control" id="apiType">
+                <option value="apiclient">apiclient</option>
+                <option value="apimock">apimock</option>
+            </select>
+        </div>
+        
+        <table class="table table-striped" id="blueprintsTable">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Número de Puntos</th>
+                    <th>Dibujar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Las filas de planos se agregarán aquí con JavaScript -->
+            </tbody>
+        </table>
+        
+        <p>Total de Puntos: <span id="totalPoints">0</span></p>
+
+        <canvas id="blueprintCanvas" class="img-responsive" width="300" height="300"></canvas>
+    </div>
+</body>
+</html>

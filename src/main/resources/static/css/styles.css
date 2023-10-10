@@ -1,0 +1,38 @@
+#blueprintsTable {
+    width: 300px;
+}
+body {
+    background-color: #f0f0f0; 
+}
+h1 {
+    font-size: 36px;
+    text-align: center;
+    margin-top: 20px;
+    color: #333; 
+}
+
+
+.table th {
+    background-color: #337ab7; 
+    color: #fff; 
+}
+
+.table th, .table td {
+    text-align: center; 
+}
+
+
+.table .btn {
+    background-color: #5bc0de;
+    border: none;
+    color: #fff; 
+}
+
+.table .btn:hover {
+    background-color: #31b0d5;
+}
+
+
+#blueprintCanvas {
+    border: 2px solid #337ab7;
+}
