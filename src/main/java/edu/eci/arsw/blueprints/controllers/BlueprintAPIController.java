@@ -10,6 +10,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -83,6 +84,16 @@ public class BlueprintAPIController {
         } catch (BlueprintNotFoundException e) {
             Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @DeleteMapping(value="/{author}/{bpName}")
+    public ResponseEntity<?> manejadordeleteRecursoBlueprint(@PathVariable String author,@PathVariable String bpName) {
+        try{
+            bps.deleteBlueprint(author, bpName);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        } catch (BlueprintNotFoundException e) {
+            return new ResponseEntity<>("No existe", HttpStatus.NOT_FOUND);
         }
     }
 }

@@ -25,6 +25,42 @@ apiclient = (function () {
                     console.log(err);
                 }
             });
+        },
+
+        postBlueprint: function(author, blueprintName){
+            var data = JSON.stringify({
+                author: author,
+                "points": [],
+                "name": blueprintName
+            });
+            return new Promise(function(resolve, reject) {
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/blueprints/",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: data
+                }).then(resolve).catch(function(err) {
+                    console.log(err);
+                    postBlueprint(author, blueprintName).then(resolve).catch(reject);
+                });
+            });
+        },
+
+        deleteBluePrint: function (author, blueprintName) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: `http://localhost:8080/blueprints/${author}/${blueprintName}`,
+                    type: 'DELETE',
+                    contentType: "application/json",
+                    success: function (result) {
+                        resolve(result);
+                    },
+                    error: function (error) {
+                        reject(error);
+                    }
+                });
+            });
         }
     }
 })();

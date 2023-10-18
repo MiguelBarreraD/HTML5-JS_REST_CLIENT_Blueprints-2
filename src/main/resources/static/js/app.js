@@ -1,7 +1,12 @@
 $(document).ready(function () {
+    const formularioBlueprint = document.getElementById('formularioBlueprint');
+    const btnAcetpNewBlueprint = document.getElementById('btnAcetpNewBlueprint');
+    formularioBlueprint.style.display = 'none';
+    btnAcetpNewBlueprint.style.display = 'none';
     var nameBlue = '';
     var auName = '';
     var points = [];
+    var mode = '';
     $('#btnUpdateBlueprints').click(function () {
         const authorName = $('#authorNameInput').val();
         const apiType = $('#apiType').val();
@@ -23,6 +28,18 @@ $(document).ready(function () {
         const newPoints = points;
         updateBlueprint(authorName, blueprintName, newPoints);
         resetPoints();
+    });
+
+    $('#btnCreateBlueprints').on('click', function () {
+        resetPoints();
+        formularioBlueprint.style.display = 'block';
+        btnAcetpNewBlueprint.style.display = 'block';
+    });
+
+    $('#btnAcetpNewBlueprint').on('click', function () {
+        resetPoints();
+        formularioBlueprint.style.display = 'none';
+        btnAcetpNewBlueprint.style.display = 'none';
     });
 
 
@@ -180,7 +197,16 @@ $(document).ready(function () {
             }
         });
     }
-      
 
+    function pruebaPost() {
+        apiclient.postBlueprint("juan", "CasaJaider");
+    }
+    
+    function pruebaDelete() {
+        apiclient.deleteBluePrint("juan", "CasaJaider");
+    }
+
+    pruebaDelete();
+    //pruebaPost();
     init();
 });
