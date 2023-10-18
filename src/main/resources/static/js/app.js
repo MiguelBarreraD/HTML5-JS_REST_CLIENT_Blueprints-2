@@ -14,7 +14,22 @@ $(document).ready(function () {
         setAuthorName (authorName);
         const apiType = $('#apiType').val();
         getBlueprintsByNameAndAuthor(authorName, blueprintName, apiType);
+        resetPoints();
     });
+
+    $('#updateBluePrint').on('click', function () {
+        const authorName = auName;
+        const blueprintName = nameBlue;
+        const newPoints = points;
+        updateBlueprint(authorName, blueprintName, newPoints);
+        resetPoints();
+    });
+
+
+    function resetPoints() {
+        points = []; 
+    }
+    
 
     function setBluePrintName(name) {
         nameBlue = name; 
@@ -34,11 +49,14 @@ $(document).ready(function () {
             x: event.clientX - rect.left,
             y: event.clientY - rect.top,
           };
-          points.push(newPoint);
-          drawPoint(newPoint);
-          console.log(points);
+          if (nameBlue != '') {
+            points.push(newPoint);
+            drawPoint(newPoint);
+          } else {
+            console.log("Selecione un blueprint")
+        }
         });
-      }
+    }
       
 
     function updateBlueprintsByAuthor(authorName, apiType) {
@@ -109,7 +127,7 @@ $(document).ready(function () {
             ctx.stroke();
             canvas.ultimoPuntoDibujado = nuevoPunto;
         }
-      }
+    }
     
     function drawBlueprint(blueprint) {
 
@@ -153,25 +171,16 @@ $(document).ready(function () {
         return { left: offsetLeft, top: offsetTop };
       }
       
-    function prueba() {
-        const blueprint = {
-            author: auName,
-            name: nameBlue,
-            points: [
-                {
-                    x: 10,
-                    y: 10
-                },
-                {
-                    x: 20,
-                    y: 20
-                }
-            ]
-        };
-
-        apiclient.updateBlueprint("juan", "casa", blueprint, function(data) {
-            console.log(data);
+    function updateBlueprint(authorName, blueprintName, newPoints) {
+        apiclient.getBlueprintsByNameAndAuthor(authorName, blueprintName, function (blueprint) {
+            if (blueprint) {
+                const currentPoints = blueprint.points;
+                const updatedPoints = currentPoints.concat(newPoints);
+                apiclient.updateBlueprint(authorName, blueprintName, { points: updatedPoints }, function (data) {});
+            }
         });
     }
+      
+
     init();
 });
