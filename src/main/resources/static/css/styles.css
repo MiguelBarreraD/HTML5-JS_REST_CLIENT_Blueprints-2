@@ -1,6 +1,7 @@
-#blueprintsTable {
-    width: 300px;
-}
+#blueprintCanvas {
+    border: 2px solid #337ab7; 
+  }
+
 body {
     background-color: #f0f0f0; 
 }
@@ -11,6 +12,12 @@ h1 {
     color: #333; 
 }
 
+.table , .table-striped {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+    margin-top: 0.2cm !important;
+}
 
 .table th {
     background-color: #337ab7; 
@@ -26,6 +33,7 @@ h1 {
     background-color: #5bc0de;
     border: none;
     color: #fff; 
+    padding: auto;
 }
 
 .table .btn:hover {

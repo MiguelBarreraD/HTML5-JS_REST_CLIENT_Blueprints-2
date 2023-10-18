@@ -115,6 +115,22 @@ apimock = (function () {
             callback(
                 mockdata[authname].find(function (e) { return e.name === bpname })
             );
+        },
+
+        addPointToBlueprint: function (authname, bpname, newPoint, callback) {
+            const blueprints = mockdata[authname];
+            const blueprint = blueprints.find(function (e) { return e.name === bpname });
+
+            if (blueprint) {
+                blueprint.points.push(newPoint);
+                console.log(blueprint.points);
+                callback(blueprint);
+            } else {
+                console.log("No se encontró el blueprint especificado.");
+                callback(null); 
+            } 
         }
+        
     }
 })();
+

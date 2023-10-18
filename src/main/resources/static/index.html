@@ -24,9 +24,6 @@
             <label for="authorNameInput">Nombre del Autor:</label>
             <input type="text" class="form-control" id="authorNameInput" placeholder="Ingrese el nombre del autor">
         </div>
-        
-        <button type="button" class="btn btn-primary" id="btnUpdateBlueprints">Actualizar Planos</button>
-        
         <div class="form-group">
             <label for="apiType">Tipo de API:</label>
             <select class="form-control" id="apiType">
@@ -35,6 +32,7 @@
             </select>
         </div>
         
+        <button type="button" class="btn btn-primary" id="btnUpdateBlueprints">Actualizar Planos</button>
         <table class="table table-striped" id="blueprintsTable">
             <thead>
                 <tr>
@@ -50,7 +48,7 @@
         
         <p>Total de Puntos: <span id="totalPoints">0</span></p>
 
-        <canvas id="blueprintCanvas" class="img-responsive" width="300" height="300"></canvas>
+        <canvas id="blueprintCanvas" class="img-responsive" width="450" height="450"></canvas>
     </div>
 </body>
 </html>

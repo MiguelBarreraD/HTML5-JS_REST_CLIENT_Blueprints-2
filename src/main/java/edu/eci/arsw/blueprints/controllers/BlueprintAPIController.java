@@ -38,8 +38,7 @@ public class BlueprintAPIController {
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<?> manejadorGetRecursoBlueprints(){
-        try {
-            //obtener datos que se enviarán a través del API
+        try {   
             return new ResponseEntity<>(bps.getAllBlueprints(), HttpStatus.ACCEPTED);
         } catch (BlueprintNotFoundException  ex) {
             Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
