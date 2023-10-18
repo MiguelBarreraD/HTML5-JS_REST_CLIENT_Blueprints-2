@@ -153,5 +153,25 @@ $(document).ready(function () {
         return { left: offsetLeft, top: offsetTop };
       }
       
+    function prueba() {
+        const blueprint = {
+            author: auName,
+            name: nameBlue,
+            points: [
+                {
+                    x: 10,
+                    y: 10
+                },
+                {
+                    x: 20,
+                    y: 20
+                }
+            ]
+        };
+
+        apiclient.updateBlueprint("juan", "casa", blueprint, function(data) {
+            console.log(data);
+        });
+    }
     init();
 });
