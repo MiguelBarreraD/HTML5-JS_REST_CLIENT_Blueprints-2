@@ -6,11 +6,11 @@ $(document).ready(function () {
     var nameBlue = '';
     var auName = '';
     var points = [];
-    var mode = '';
     $('#btnUpdateBlueprints').click(function () {
         const authorName = $('#authorNameInput').val();
         const apiType = $('#apiType').val();
         updateBlueprintsByAuthor(authorName, apiType);
+        clearCanva();
     });
     $('#blueprintsTable tbody').on('click', 'button.viewBlueprint', function () {
         const authorName = $(this).data('author');
@@ -26,7 +26,9 @@ $(document).ready(function () {
         const authorName = auName;
         const blueprintName = nameBlue;
         const newPoints = points;
+        const apiType = $('#apiType').val();
         updateBlueprint(authorName, blueprintName, newPoints);
+        updateBlueprintsByAuthor(authorName, apiType);
         resetPoints();
     });
 
@@ -34,14 +36,43 @@ $(document).ready(function () {
         resetPoints();
         formularioBlueprint.style.display = 'block';
         btnAcetpNewBlueprint.style.display = 'block';
+        $('#btnUpdateBlueprints, #btnCreateBlueprints, #updateBluePrint, #deleteBluePrint').prop('disabled', true);
     });
+
 
     $('#btnAcetpNewBlueprint').on('click', function () {
         resetPoints();
-        formularioBlueprint.style.display = 'none';
-        btnAcetpNewBlueprint.style.display = 'none';
+        const authorName = $('#authorNameInput').val();
+        const bpName = $('#blueprintNameInput').val();
+        const apiType = $('#apiType').val();
+        if (authorName == '' || bpName == '') {
+            alert("Ni el nombre del autor o nombre de plano puede ser vacio");
+        }
+        else {
+            createBluePrint(authorName,bpName);
+            formularioBlueprint.style.display = 'none';
+            btnAcetpNewBlueprint.style.display = 'none';
+            $('#blueprintNameInput').val('');
+            $('#btnUpdateBlueprints, #btnCreateBlueprints, #updateBluePrint, #deleteBluePrint').prop('disabled', false);
+            updateBlueprintsByAuthor(authorName, apiType);
+        }  
+        
     });
-
+    
+    $('#deleteBluePrint').on('click', function () {
+        resetPoints();
+        const authorName = auName;
+        const blueprintName = nameBlue;
+        const apiType = $('#apiType').val();
+        if (blueprintName == '' || authorName == '') {
+            alert("Seleccione un blueprint para poder eliminarlo");
+        } else {  
+            deleteBluePrint(authorName,blueprintName);
+            updateBlueprintsByAuthor(authorName, apiType);
+            setBluePrintName('');
+            setAuthorName('');
+        }
+    });
 
     function resetPoints() {
         points = []; 
@@ -70,7 +101,7 @@ $(document).ready(function () {
             points.push(newPoint);
             drawPoint(newPoint);
           } else {
-            console.log("Selecione un blueprint")
+            alert("Selecione un blueprint");
         }
         });
     }
@@ -135,58 +166,58 @@ $(document).ready(function () {
     function drawPoint(nuevoPunto) {
         var canvas = document.getElementById("blueprintCanvas");
         const ctx = canvas.getContext("2d");
-        if (canvas.ultimoPuntoDibujado) {
-            ctx.beginPath();
-            ctx.moveTo(canvas.ultimoPuntoDibujado.x, canvas.ultimoPuntoDibujado.y);
-            ctx.lineTo(nuevoPunto.x, nuevoPunto.y);
-            ctx.strokeStyle = "blue"; 
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            canvas.ultimoPuntoDibujado = nuevoPunto;
+      
+        // Si no hay ningún punto dibujado, establece el nuevo punto como el último punto dibujado
+        if (!canvas.ultimoPuntoDibujado) {
+          canvas.ultimoPuntoDibujado = nuevoPunto;
         }
-    }
-    
-    function drawBlueprint(blueprint) {
+      
+        ctx.beginPath();
+        ctx.moveTo(canvas.ultimoPuntoDibujado.x, canvas.ultimoPuntoDibujado.y);
+        ctx.lineTo(nuevoPunto.x, nuevoPunto.y);
+        ctx.strokeStyle = "blue";
+        ctx.lineWidth = 2;
+        ctx.stroke();
 
+        canvas.ultimoPuntoDibujado = nuevoPunto;
+      }
+    
+    function clearCanva() {
         const canvas = document.getElementById("blueprintCanvas");
         const ctx = canvas.getContext("2d");
-        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.ultimoPuntoDibujado = null;
+    }
+    function drawBlueprint(blueprint) {
+        clearCanva();
+        if (blueprint.points.length === 0) {
+          return;
+        }
+        const canvas = document.getElementById("blueprintCanvas");
+        const ctx = canvas.getContext("2d");
+      
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       
         ctx.strokeStyle = "blue";
         ctx.lineWidth = 2;
       
         ctx.beginPath();
-        ctx.moveTo(blueprint.points[0].x ,blueprint.points[0].y );
-
+        ctx.moveTo(blueprint.points[0].x, blueprint.points[0].y);
+      
         blueprint.points.forEach(function (point, index) {
           if (index > 0) {
-            ctx.lineTo(point.x ,point.y);
+            ctx.lineTo(point.x, point.y);
           }
         });
         ctx.stroke();
-
+      
         if (blueprint.points.length > 0) {
-            const ultimoPuntoDibujado = blueprint.points[blueprint.points.length - 1];
-            canvas.ultimoPuntoDibujado = ultimoPuntoDibujado;
+          const ultimoPuntoDibujado = blueprint.points[blueprint.points.length - 1];
+          canvas.ultimoPuntoDibujado = ultimoPuntoDibujado;
         }
-      }
+    }
+      
     
-    
-    function getOffset(obj) {
-        var offsetLeft = 0;
-        var offsetTop = 0;
-        do {
-          if (!isNaN(obj.offsetLeft)) {
-            offsetLeft += obj.offsetLeft;
-          }
-          if (!isNaN(obj.offsetTop)) {
-            offsetTop += obj.offsetTop;
-          }
-          obj = obj.offsetParent;
-        } while (obj);
-        return { left: offsetLeft, top: offsetTop };
-      }
       
     function updateBlueprint(authorName, blueprintName, newPoints) {
         apiclient.getBlueprintsByNameAndAuthor(authorName, blueprintName, function (blueprint) {
@@ -198,15 +229,11 @@ $(document).ready(function () {
         });
     }
 
-    function pruebaPost() {
-        apiclient.postBlueprint("juan", "CasaJaider");
+    function createBluePrint(authorName, blueprintName) {
+        apiclient.postBlueprint(authorName, blueprintName);
     }
-    
-    function pruebaDelete() {
-        apiclient.deleteBluePrint("juan", "CasaJaider");
+    function deleteBluePrint(authorName, blueprintName) {
+        apiclient.deleteBluePrint(authorName, blueprintName);
     }
-
-    pruebaDelete();
-    //pruebaPost();
     init();
 });

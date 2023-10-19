@@ -40,10 +40,7 @@ apiclient = (function () {
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     data: data
-                }).then(resolve).catch(function(err) {
-                    console.log(err);
-                    postBlueprint(author, blueprintName).then(resolve).catch(reject);
-                });
+                })
             });
         },
 
